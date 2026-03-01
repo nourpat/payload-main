@@ -35,7 +35,7 @@ jobs:
       - name: tune linux network
         run: sudo ethtool -K eth0 tx off rx off
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -70,7 +70,7 @@ jobs:
       !contains(github.event.pull_request.title, '[no lint]')
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -106,7 +106,7 @@ jobs:
           DO_NOT_TRACK: 1 # Disable Turbopack telemetry
 
       - name: Cache build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -116,7 +116,7 @@ jobs:
     needs: [changes, build]
     if: ${{ needs.changes.outputs.needs_tests == 'true' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -128,7 +128,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -143,7 +143,7 @@ jobs:
     needs: [changes, build]
     if: ${{ needs.changes.outputs.needs_tests == 'true' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -155,7 +155,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -204,7 +204,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -216,7 +216,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -320,7 +320,7 @@ jobs:
     env:
       SUITE_NAME: ${{ matrix.suite }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -332,7 +332,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -350,7 +350,7 @@ jobs:
 
       - name: Cache Playwright Browsers for Playwright's Version
         id: cache-playwright-browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
           key: playwright-browsers-${{ env.PLAYWRIGHT_VERSION }}
@@ -369,7 +369,7 @@ jobs:
           PLAYWRIGHT_JSON_OUTPUT_NAME: results_${{ matrix.suite }}.json
           NEXT_TELEMETRY_DISABLED: 1
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: test-results-${{ matrix.suite }}
@@ -419,7 +419,7 @@ jobs:
       POSTGRES_DB: payloadtests
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -431,7 +431,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
@@ -457,7 +457,7 @@ jobs:
         if: matrix.database == 'postgres'
 
       - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.11.0
+        uses: supercharge/mongodb-github-action@1.12.1
         with:
           mongodb-version: 6.0
         if: matrix.database == 'mongodb'
@@ -474,7 +474,7 @@ jobs:
     needs: [changes, build]
     if: ${{ needs.changes.outputs.needs_tests == 'true' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Node setup
         uses: ./.github/actions/setup
@@ -486,7 +486,7 @@ jobs:
           pnpm-install-cache-key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
 
       - name: Restore build
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./*
           key: ${{ github.sha }}-${{ github.run_number }}
